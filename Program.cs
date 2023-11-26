@@ -8,7 +8,7 @@ namespace Temporizador
     {
         static void Main(string[] args)
         {
-
+            Menu();
         }
 
         static int LeTempo(string mensagem)
@@ -46,6 +46,23 @@ namespace Temporizador
 
         }
 
+        static short LeShort(string mensagem)
+        {
+            Console.WriteLine(mensagem);
+
+            string? leitura = Console.ReadLine();
+            short numero = 0;
+
+            if (short.TryParse(leitura, out numero) == false)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("AVISO: O número não foi lido corretamente, considerando como 0.");
+                Console.ResetColor();
+            }
+
+            return numero;
+        }
+
         static void ExibeTempo(int tempo)
         {
             int horas = tempo / 3600;
@@ -53,6 +70,24 @@ namespace Temporizador
             int segundos = tempo % 60;
 
             Console.WriteLine($"{horas}h {minutos}m {segundos}s");
+        }
+
+        static void Menu()
+        {
+            Console.Clear();
+
+            Console.WriteLine("Olá! Qual operação deseja efetuar?");
+            Console.WriteLine("1 - Iniciar um novo temporizador");
+            Console.WriteLine("2 - Sair do programa");
+
+            short opcao = LeShort("Digite a opção desejada");
+
+            switch (opcao)
+            {
+                case 1: PreIniciar(LeTempo("Informe o tempo no formato 99h 99m 99s:")); break;
+                case 2: System.Environment.Exit(0); break;
+                default: Menu(); break;
+            }
         }
 
         static void PreIniciar(int tempo)
@@ -87,7 +122,7 @@ namespace Temporizador
 
             Console.WriteLine("Temporizador finalizado. Pressione qualquer tecla para retornar ao menu...");
             Console.ReadKey();
-
+            Menu();
         }
     }
 }
