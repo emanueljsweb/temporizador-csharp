@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Temporizador
 {
@@ -33,7 +34,7 @@ namespace Temporizador
             int horas = 0;
 
             if (stringSegundos.Success)
-                int.Parse(stringSegundos.Value.Substring(0, stringSegundos.Length - 1));
+                segundos = int.Parse(stringSegundos.Value.Substring(0, stringSegundos.Length - 1));
 
             if (stringMinutos.Success)
                 minutos = int.Parse(stringMinutos.Value.Substring(0, stringMinutos.Length - 1));
@@ -42,6 +43,50 @@ namespace Temporizador
                 horas = int.Parse(stringHoras.Value.Substring(0, stringHoras.Length - 1));
 
             return segundos + minutos * 60 + horas * 60 * 60;
+
+        }
+
+        static void ExibeTempo(int tempo)
+        {
+            int horas = tempo / 3600;
+            int minutos = tempo % 3600 / 60;
+            int segundos = tempo % 60;
+
+            Console.WriteLine($"{horas}h {minutos}m {segundos}s");
+        }
+
+        static void PreIniciar(int tempo)
+        {
+            Console.Clear();
+
+            Console.WriteLine(
+@"  _______
+ /  12   \
+|    |    |
+|9   |   3|
+|     \   |
+|         |
+ \___6___/");
+            Console.WriteLine("Em breve, o temporizador será iniciado. Prepare-se!");
+
+            Thread.Sleep(2500);
+            Iniciar(tempo);
+        }
+
+        static void Iniciar(int tempo)
+        {
+            int tempoAtual = 0;
+
+            while (tempoAtual <= tempo)
+            {
+                Console.Clear();
+                ExibeTempo(tempoAtual);
+                tempoAtual++;
+                Thread.Sleep(1000);
+            }
+
+            Console.WriteLine("Temporizador finalizado. Pressione qualquer tecla para retornar ao menu...");
+            Console.ReadKey();
 
         }
     }
